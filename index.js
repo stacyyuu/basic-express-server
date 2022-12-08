@@ -1,6 +1,5 @@
 const { config } = require('dotenv');
-const { server } = require('./server');
+const { start } = require('./src/server');
 
 config();
-
-server.listen(process.env.PORT || 3000);
+start();
