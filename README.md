@@ -8,7 +8,7 @@
 - [Server Person Name Endpoint](https://basic-express-server-08gc.onrender.com/person?name=Stacy)
 - [Server 404 Error Endpoint](https://basic-express-server-08gc.onrender.com/meow)
 - [Pull Request](https://github.com/stacyyuu/basic-express-server/pull/2)
-- [Actions](https://github.com/stacyyuu/server-deployment-practice/actions/runs/3610784160)
+- [Actions](https://github.com/stacyyuu/basic-express-server/actions)
 
 ### Setup
 - None
