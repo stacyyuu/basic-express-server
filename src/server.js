@@ -22,4 +22,4 @@ function start(){
   app.listen(process.env.PORT || 3002, () => console.log(`listening on ${process.env.PORT}`));
 }
 
-module.exports = { start };
+module.exports = { app, start };
