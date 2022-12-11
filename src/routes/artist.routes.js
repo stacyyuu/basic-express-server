@@ -42,7 +42,7 @@ async function createArtist(req, res) {
   const artist = await Artist.create({
     name,
     genre,
-    single
+    single,
   });
   res.json(artist);
 }
@@ -59,7 +59,7 @@ async function updateArtist(req, res, next) {
     let updatedArtist = {
       name,
       genre,
-      single
+      single,
     };
 
     artist = await artist.update(updatedArtist);

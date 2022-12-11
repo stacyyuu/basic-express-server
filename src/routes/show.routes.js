@@ -43,8 +43,8 @@ async function createShow(req, res) {
   const episodes = req.body.episodes;
   const show = await Show.create({
     title,
-    released, 
-    episodes
+    released,
+    episodes,
   });
   res.json(show);
 }
@@ -59,9 +59,9 @@ async function updateShow(req, res, next) {
     const released = req.body.released ?? artist.released;
     const episodes = req.body.episodes ?? artist.episodes;
     let updatedShow = {
-      title, 
+      title,
       released,
-      episodes
+      episodes,
     };
 
     show = await show.update(updatedShow);

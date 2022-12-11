@@ -25,5 +25,5 @@ const Show = makeShow(sequelize);
 module.exports = {
   sequelize,
   Artist,
-  Show
+  Show,
 };
