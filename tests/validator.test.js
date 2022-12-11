@@ -14,7 +14,7 @@ describe('Validator', () => {
   test('With no name', () => {
     const req = { query: {} };
     const next = jest.fn();
-    
+
     validator(req, {}, next);
 
     expect(next).toHaveBeenCalledWith('Unable to validate. No name given.');

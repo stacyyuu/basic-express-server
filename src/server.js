@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const logger = require('./middleware/logger');
-const validator = require('./middleware/validator')
+const validator = require('./middleware/validator');
 const notFound = require('./error-handlers/404');
 const serverError = require('./error-handlers/500');
 const { sequelize } = require('./models');
@@ -24,10 +24,11 @@ app.get('/person', validator, (req, res) => {
   res.status(200).send({ name: req.name });
 });
 
-function start(){
+function start() {
   app.listen(process.env.PORT || 3002, async () => {
-  await sequelize.sync();
-  console.log(`listening on ${process.env.PORT}`)});
+    await sequelize.sync();
+    console.log(`listening on ${process.env.PORT}`);
+  });
 }
 
 module.exports = { app, start };
