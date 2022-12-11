@@ -1,5 +1,4 @@
-const { config } = require('dotenv');
+require('dotenv').config();
 const { start } = require('./src/server');
 
-config();
 start();
