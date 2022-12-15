@@ -8,9 +8,6 @@ const { sequelize } = require('./models');
 const { artistRoutes } = require('./routes/artist.routes');
 const { showRoutes } = require('./routes/show.routes');
 
-// Using errors when all other routes placed or no name used in query string
-app.use('*', notFound);
-app.use(serverError);
 app.use(express.json());
 app.use(artistRoutes);
 app.use(showRoutes);
@@ -23,6 +20,10 @@ app.get('/', logger, (req, res, next) => {
 app.get('/person', validator, (req, res) => {
   res.status(200).send({ name: req.name });
 });
+
+// Using errors when all other routes placed or no name used in query string
+app.use(serverError);
+app.use('*', notFound);
 
 function start() {
   app.listen(process.env.PORT || 3002, async () => {
