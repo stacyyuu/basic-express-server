@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
-const { makeArtist } = require('./artist.model');
-const { makeShow } = require('./show.model');
+const { makeArtist } = require('./artist-model');
+const { makeShow } = require('./show-model');
+const { makeGenre } = require('./genre-model');
 
 const DATABASE_URL =
   process.env.NODE_ENV === 'test'
@@ -22,10 +23,14 @@ const sequelize = new Sequelize(DATABASE_URL, CONNECTION_OPTIONS);
 
 const Artist = makeArtist(sequelize);
 const Show = makeShow(sequelize);
+const Genre = makeGenre(sequelize);
 // what we expect databse to look like
+
+Artist.hasMany(Genre);
 
 module.exports = {
   sequelize,
   Artist,
   Show,
+  Genre
 };

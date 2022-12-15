@@ -18,11 +18,19 @@ async function getShows(_, res) {
 
 async function getShow(req, res, next) {
   const id = req.params.id;
-  const show = await Show.findOne({ where: { id: id } });
+  const show = await Show.findOne({ 
+    where: { id: id },
+  });
   if (show === null) {
     next();
   } else {
-    res.json(show);
+    const rawShow = {
+      id: show.id,
+      released: show.released,
+      episodes: show.episodes,
+    };
+
+    res.json(rawShow);
   }
 }
 
