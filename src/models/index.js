@@ -17,10 +17,13 @@ const CONNECTION_OPTIONS =
         },
       };
 
+
 const sequelize = new Sequelize(DATABASE_URL, CONNECTION_OPTIONS);
+// creates a Sequelize constructor - info that it needs is database url and connection options 
 
 const Artist = makeArtist(sequelize);
 const Show = makeShow(sequelize);
+// what we expect databse to look like 
 
 module.exports = {
   sequelize,
