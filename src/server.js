@@ -5,8 +5,8 @@ const validator = require('./middleware/validator');
 const notFound = require('./error-handlers/404');
 const serverError = require('./error-handlers/500');
 const { sequelize } = require('./models');
-const { artistRoutes } = require('./routes/artist.routes');
-const { showRoutes } = require('./routes/show.routes');
+const { artistRoutes } = require('./routes/artist-routes');
+const { showRoutes } = require('./routes/show-routes');
 
 app.use(express.json());
 app.use(artistRoutes);
@@ -32,4 +32,7 @@ function start() {
   });
 }
 
-module.exports = { app, start };
+module.exports = { 
+  app, 
+  start
+ };

@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { Artist } = require('../models/index');
+const { Artist, Genre } = require('../models/index');
 
 const artistRoutes = express();
 
@@ -18,11 +18,20 @@ async function getArtists(_, res) {
 
 async function getArtist(req, res, next) {
   const id = req.params.id;
-  const artist = await Artist.findOne({ where: { id: id } });
+  const artist = await Artist.findOne({ 
+    where: { id: id },
+    include: Genre, 
+  });
   if (artist === null) {
     next();
   } else {
-    res.json(artist);
+    const rawArtist = {
+      id: artist.id,
+      name: artist.name,
+      single: artist.single,
+      genres: artist.Genres.map((genre) => genre.name),
+    };
+    res.json(rawArtist);
   }
 }
 
@@ -38,12 +47,16 @@ async function deleteArtist(req, res, next) {
 }
 
 async function createArtist(req, res) {
-  const { name, genre, single } = req.body;
+  const { name, single } = req.body;
   const artist = await Artist.create({
     name,
-    genre,
     single,
   });
+  const genres = req.body.genres ?? [];
+  for (const name of genres) {
+    await Artist.createGenre({ name });
+  }
+
   res.json(artist);
 }
 
@@ -54,11 +67,9 @@ async function updateArtist(req, res, next) {
     next();
   } else {
     const name = req.body.name ?? artist.name;
-    const genre = req.body.genre ?? artist.genre;
     const single = req.body.single ?? artist.single;
     let updatedArtist = {
       name,
-      genre,
       single,
     };
 
