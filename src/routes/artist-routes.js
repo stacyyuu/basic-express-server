@@ -18,9 +18,9 @@ async function getArtists(_, res) {
 
 async function getArtist(req, res, next) {
   const id = req.params.id;
-  const artist = await Artist.findOne({ 
+  const artist = await Artist.findOne({
     where: { id: id },
-    include: Genre, 
+    include: Genre,
   });
   if (artist === null) {
     next();
@@ -54,7 +54,7 @@ async function createArtist(req, res) {
   });
   const genres = req.body.genres ?? [];
   for (const name of genres) {
-    await Artist.createGenre({ name });
+    await artist.createGenre({ name });
   }
 
   res.json(artist);

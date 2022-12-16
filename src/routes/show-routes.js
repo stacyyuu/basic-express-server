@@ -18,7 +18,7 @@ async function getShows(_, res) {
 
 async function getShow(req, res, next) {
   const id = req.params.id;
-  const show = await Show.findOne({ 
+  const show = await Show.findOne({
     where: { id: id },
   });
   if (show === null) {
