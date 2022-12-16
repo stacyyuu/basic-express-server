@@ -18,9 +18,9 @@ async function getArtists(_, res) {
 
 async function getArtist(req, res, next) {
   const id = req.params.id;
-  const artist = await Artist.findOne({ 
+  const artist = await Artist.findOne({
     where: { id: id },
-    include: Genre, 
+    include: Genre,
   });
   if (artist === null) {
     next();
