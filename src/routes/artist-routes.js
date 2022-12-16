@@ -54,7 +54,7 @@ async function createArtist(req, res) {
   });
   const genres = req.body.genres ?? [];
   for (const name of genres) {
-    await Artist.createGenre({ name });
+    await artist.createGenre({ name });
   }
 
   res.json(artist);

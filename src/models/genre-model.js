@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 function makeGenre(sequelize) {
   return sequelize.define('Genre', {
-    genre: DataTypes.STRING,
+    name: DataTypes.STRING,
   });
 }
 
