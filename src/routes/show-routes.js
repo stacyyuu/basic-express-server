@@ -47,7 +47,7 @@ async function deleteShow(req, res, next) {
 
 async function createShow(req, res) {
   const title = req.body.title;
-  const released = Date.parse(req.body.released);
+  const released = req.body.released;
   const episodes = req.body.episodes;
   const show = await Show.create({
     title,
