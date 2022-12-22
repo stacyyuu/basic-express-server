@@ -1,5 +1,5 @@
 const { app } = require('../src/server');
-const { sequelize } = require('../src/models/index');
+const { sequelize } = require('../src/models');
 const supertest = require('supertest');
 
 const request = supertest(app);
@@ -27,50 +27,64 @@ describe('Person Route', () => {
   });
 });
 
-
 describe('Artist Routes', () => {
   beforeEach(() => sequelize.sync());
-  afterEach(() => sequelize.drop());
 
-  it('Creates an artist', async () => {
+  test('Creates an artist', async () => {
     const response = await request.post('/artist').send({
       name: 'Giveon',
       single: 'For Tonight',
     });
+    const response2 = await request.post('/artist').send({
+      name: 'JVKE',
+      single: 'Golden Hour',
+    });
+    const response3 = await request.post('/artist').send({
+      name: 'The Weeknd',
+      single: 'Out of Time',
+    });
+  const response4 = await request.post('/artist').send({
+      name: 'Doja Cat',
+      single: 'Meow',
+    });
+
     expect(response.status).toBe(200);
+    expect(response2.status).toBe(200);
+    expect(response3.status).toBe(200);
+    expect(response4.status).toBe(200);
     const artist = response.body;
-    expect(artist.name).toBe('Giveon');
-    expect(artist.single).toBe('For Tonight');
+    expect(artist.name).toEqual('Giveon');
+    expect(artist.single).toEqual('For Tonight');
   });
 
-  it('Get an artist', async () => {
+  test('Get an artist', async () => {
     const response = await request.get('/artist/3');
     expect(response.status).toBe(200);
     const artist = response.body;
-    expect(artist.name).toBe('The Weeknd');
-    expect(artist.single).toBe('Out of Time');
+    expect(artist.name).toEqual('The Weeknd');
+    expect(artist.single).toEqual('Out of Time');
   });
 
-  it('Gets all artist', async () => {
+  test('Gets all artist', async () => {
     const response = await request.get('/artist');
     expect(response.status).toBe(200);
-    expect(response.body.length).toBe(5);
-    const artist = response.body[2];
-    expect(artist.name).toBe('JVKE');
-    expect(artist.single).toBe('Golden Hour');
+    expect(response.body.length).toEqual(4);
+    const artist = response.body[1];
+    expect(artist.name).toEqual('JVKE');
+    expect(artist.single).toEqual('Golden Hour');
   });
 
-  it('Updates an artist', async () => {
-    const response = await request.put('/artist/18').send({
+  test('Updates an artist', async () => {
+    const response = await request.put('/artist/4').send({
       single: 'Say So',
     });
     expect(response.status).toBe(200);
     const artist = response.body;
-    expect(artist.name).toBe('Doja Cat');
-    expect(artist.single).toBe('Say So');
+    expect(artist.name).toEqual('Doja Cat');
+    expect(artist.single).toEqual('Say So');
   });
 
-  it('It creates an artist with genres', async () => {
+  test('It creates an artist with genres', async () => {
     const response = await request.post('/artist').send({
       name: 'Majid Jordan',
       single: 'Gave Your Love Away',
@@ -83,53 +97,86 @@ describe('Artist Routes', () => {
     expect(artist.status).toBe(200);
     expect(artist.body.genres).toEqual(['R&B', 'Soul', 'Alternate R&B']);
   });
+
+  test('Deletes a single artist', async () => {
+    await request.delete('/artist/1');
+    const response = await request.get('/artist');
+    expect(response.body[0].name).toEqual('Giveon');
+    expect(response.body[0].single).toEqual('For Tonight');
+  });
 });
+
 
 
 describe('Show Routes', () => {
   beforeEach(() => sequelize.sync());
-  afterEach(() => sequelize.drop());
 
-  it('Creates a show', async () => {
+  test('Creates a show', async () => {
     const response = await request.post('/show').send({
       title: 'Wednesday Addams',
-      released: 2022-11-23,
+      released: '2022-11-23',
       episodes: 8,
     });
+    const response2 = await request.post('/show').send({
+      title: 'Demon Slayer',
+      released: '2019-4-6',
+      episodes: 26,
+    });
+    const response3 = await request.post('/show').send({
+      title: 'House of the Dragon',
+      released: '2022-8-21',
+      episodes: 10,
+    });
+    const response4 = await request.post('/show').send({
+      title: 'The Boys',
+      released: '2019-7-26',
+      episodes: 24,
+    });
     expect(response.status).toBe(200);
+    expect(response2.status).toBe(200);
+    expect(response3.status).toBe(200);
+    expect(response4.status).toBe(200);
     const show = response.body;
-    expect(show.title).toBe('Wednesday Addams');
-    expect(show.released).toBe(Date.parse(2022-11-23));
-    expect(show.episodes).toBe(8);
+    expect(show.title).toEqual('Wednesday Addams');
+    expect(show.released).toEqual('2022-11-23');
+    expect(show.episodes).toEqual(8);
   });
 
-  it('Get a show', async () => {
-    const response = await request.get('/show/1');
+  test('Get a show', async () => {
+    const response = await request.get('/show/2');
     expect(response.status).toBe(200);
     const show = response.body;
-    expect(show.title).toBe('Demon Slayer');
-    expect(show.released).toBe('2019-04-06T07:00:00.000Z');
-    expect(show.episodes).toBe(26);
+    expect(show.title).toEqual('Demon Slayer');
+    expect(show.released).toEqual('2019-4-6');
+    expect(show.episodes).toEqual(26);
   });
 
-  it('Gets all shows', async () => {
+  test('Gets all shows', async () => {
     const response = await request.get('/show');
     expect(response.status).toBe(200);
-    expect(response.body.length).toBe(4);
-    const show = response.body[1];
-    expect(show.title).toBe('House of the Dragon');
-    expect(show.released).toBe('2022-08-21T07:00:00.000Z');
-    expect(show.episodes).toBe(10);
+    expect(response.body.length).toEqual(4);
+    const show = response.body[2];
+    expect(show.title).toEqual('House of the Dragon');
+    expect(show.released).toEqual('2022-8-21');
+    expect(show.episodes).toEqual(10);
   });
 
-  it('Updates a show', async () => {
-    const response = await request.put('/show/3').send({
+  test('Updates a show', async () => {
+    const response = await request.put('/show/4').send({
       episodes: 23,
     });
     expect(response.status).toBe(200);
     const show = response.body;
-    expect(show.title).toBe('The Boys');
-    expect(show.released).toBe('2019-07-26T07:00:00.000Z');
-    expect(show.episodes).toBe(23);
+    expect(show.title).toEqual('The Boys');
+    expect(show.released).toEqual('2019-7-26');
+    expect(show.episodes).toEqual(23);
+  });
+
+  test('Deletes a single show', async () => {
+    await request.delete('/show/1');
+    let response = await request.get('/show');
+    expect(response.body[0].title).toEqual('Wednesday Addams');
+    expect(response.body[0].released).toEqual('2022-11-23');
+    expect(response.body[0].episodes).toEqual(8);
   });
 });
