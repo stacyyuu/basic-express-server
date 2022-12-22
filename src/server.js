@@ -7,7 +7,9 @@ const serverError = require('./error-handlers/500');
 const { sequelize } = require('./models');
 const { artistRoutes } = require('./routes/artist-routes');
 const { showRoutes } = require('./routes/show-routes');
+// const { authRoutes } = require('./auth');
 
+// server.us(authRoutes);
 app.use(express.json());
 app.use(artistRoutes);
 app.use(showRoutes);
