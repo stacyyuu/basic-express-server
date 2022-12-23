@@ -26,6 +26,7 @@ async function getShow(req, res, next) {
   } else {
     const rawShow = {
       id: show.id,
+      title: show.title,
       released: show.released,
       episodes: show.episodes,
     };
@@ -63,9 +64,9 @@ async function updateShow(req, res, next) {
   if (show == null) {
     next();
   } else {
-    const title = req.body.title ?? artist.title;
-    const released = req.body.released ?? artist.released;
-    const episodes = req.body.episodes ?? artist.episodes;
+    const title = req.body.title ?? show.title;
+    const released = req.body.released ?? show.released;
+    const episodes = req.body.episodes ?? show.episodes;
     let updatedShow = {
       title,
       released,
