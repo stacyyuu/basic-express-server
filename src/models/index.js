@@ -18,7 +18,6 @@ const CONNECTION_OPTIONS =
         },
       };
 
-      
 const sequelize = new Sequelize(DATABASE_URL, CONNECTION_OPTIONS);
 // creates a Sequelize constructor - info that it needs is database url and connection options
 
