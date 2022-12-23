@@ -101,8 +101,8 @@ describe('Artist Routes', () => {
   test('Deletes a single artist', async () => {
     await request.delete('/artist/1');
     const response = await request.get('/artist');
-    expect(response.body[0].name).toEqual('Giveon');
-    expect(response.body[0].single).toEqual('For Tonight');
+    expect(response.body[0].name).toEqual('JVKE');
+    expect(response.body[0].single).toEqual('Golden Hour');
   });
 });
 
@@ -119,17 +119,17 @@ describe('Show Routes', () => {
     });
     const response2 = await request.post('/show').send({
       title: 'Demon Slayer',
-      released: '2019-4-6',
+      released: '2019-04-06',
       episodes: 26,
     });
     const response3 = await request.post('/show').send({
       title: 'House of the Dragon',
-      released: '2022-8-21',
+      released: '2022-08-21',
       episodes: 10,
     });
     const response4 = await request.post('/show').send({
       title: 'The Boys',
-      released: '2019-7-26',
+      released: '2019-07-26',
       episodes: 24,
     });
     expect(response.status).toBe(200);
@@ -147,7 +147,7 @@ describe('Show Routes', () => {
     expect(response.status).toBe(200);
     const show = response.body;
     expect(show.title).toEqual('Demon Slayer');
-    expect(show.released).toEqual('2019-4-6');
+    expect(show.released).toEqual('2019-04-06');
     expect(show.episodes).toEqual(26);
   });
 
@@ -157,7 +157,7 @@ describe('Show Routes', () => {
     expect(response.body.length).toEqual(4);
     const show = response.body[2];
     expect(show.title).toEqual('House of the Dragon');
-    expect(show.released).toEqual('2022-8-21');
+    expect(show.released).toEqual('2022-08-21');
     expect(show.episodes).toEqual(10);
   });
 
@@ -168,15 +168,15 @@ describe('Show Routes', () => {
     expect(response.status).toBe(200);
     const show = response.body;
     expect(show.title).toEqual('The Boys');
-    expect(show.released).toEqual('2019-7-26');
+    expect(show.released).toEqual('2019-07-26');
     expect(show.episodes).toEqual(23);
   });
 
   test('Deletes a single show', async () => {
     await request.delete('/show/1');
     let response = await request.get('/show');
-    expect(response.body[0].title).toEqual('Wednesday Addams');
-    expect(response.body[0].released).toEqual('2022-11-23');
-    expect(response.body[0].episodes).toEqual(8);
+    expect(response.body[0].title).toEqual('Demon Slayer');
+    expect(response.body[0].released).toEqual('2019-04-06');
+    expect(response.body[0].episodes).toEqual(26);
   });
 });
