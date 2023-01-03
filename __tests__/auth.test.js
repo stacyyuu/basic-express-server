@@ -16,6 +16,18 @@ describe('Auth Routes', () => {
     const user = await User.findLoggedIn('stacy', 'maru5');
     expect(user).toBeDefined();
   });
+  
+  test('Nulls for invalid password', async () => {
+    await User.createWithHashed('stacy', 'maru5');
+    const user = await User.findLoggedIn('stacy', 'badpass');
+    expect(user).toEqual(null);
+  });
+
+  test('Nulls for missing user', async () => {
+    await User.createWithHashed('stacy', 'maru5');
+    const user = await User.findLoggedIn('someone', 'maru5');
+    expect(user).toEqual(null);
+  });
 
   test('Returns JWT from after sign in', async () => {
     // arrange

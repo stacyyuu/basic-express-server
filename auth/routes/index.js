@@ -47,7 +47,26 @@ async function signIn(req, res, next) {
   }
 }
 
+// not going to use response
+async function checkJWT(req, _, next) {
+  const auth = req.header('Authorization') || '';
+  if (!auth.startsWith('Bearer ')){
+    next(new Error('Header does not contain Bearer.'));
+    return;
+  }
+  try {
+  const jwtoken = auth.replace('Bearer ', '');
+  const decoded = jwt.verify(jwtoken, 'this is a secret, shhh');
+  req.username = decoded.username;
+  next();
+  } catch (err){
+    next(new Error('Could not decode auth', {cause: err}))
+  }
+}
+
+
 module.exports = {
   authRoutes,
   signIn,
+  checkJWT
 };

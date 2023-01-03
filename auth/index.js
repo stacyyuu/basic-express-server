@@ -1,5 +1,6 @@
-'use strict';
+const { authRoutes, checkJWT } = require('./routes');
 
-const { authRoutes } = require('./routes');
-
-module.exports = { authRoutes };
+module.exports = {
+  authRoutes,
+  checkJWT,
+};

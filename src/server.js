@@ -7,7 +7,7 @@ const serverError = require('./error-handlers/500');
 const { sequelize } = require('./models');
 const { artistRoutes } = require('./routes/artist-routes');
 const { showRoutes } = require('./routes/show-routes');
-const { authRoutes } = require('../auth');
+const { authRoutes, checkJWT } = require('../auth');
 
 app.use(express.json());
 app.use(authRoutes);
@@ -21,6 +21,10 @@ app.get('/', logger, (req, res, next) => {
 
 app.get('/person', validator, (req, res) => {
   res.status(200).send({ name: req.name });
+});
+
+app.get('/loggedin', checkJWT, (req, res) => {
+  res.status(200).send('You are logged in, ' + req.username);
 });
 
 // Using errors when all other routes placed or no name used in query string
