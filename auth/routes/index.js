@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
 const authRoutes = express();
-
+const TOKEN_SECRET = process.env.TOKEN_SECRET || 'SET A TOKEN SECRET';
 // Creating or logging in user with username and password using /signup and /signin routes
 authRoutes.post('/signup', signUp);
 authRoutes.post('/signin', signIn);
@@ -38,7 +38,7 @@ async function signIn(req, res, next) {
 
     // more to come in lab 8
     const data = { username: user.username };
-    const jwtoken = jwt.sign(data, 'this is a secret, shhh');
+    const jwtoken = jwt.sign(data, TOKEN_SECRET);
 
     // instead of sending username, send JWT
     res.send(jwtoken);
@@ -56,7 +56,7 @@ async function checkJWT(req, _, next) {
   }
   try {
   const jwtoken = auth.replace('Bearer ', '');
-  const decoded = jwt.verify(jwtoken, 'this is a secret, shhh');
+  const decoded = jwt.verify(jwtoken, TOKEN_SECRET);
   req.username = decoded.username;
   next();
   } catch (err){
