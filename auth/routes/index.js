@@ -1,5 +1,6 @@
 const express = require('express');
 const base64 = require('js-base64');
+const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
 const authRoutes = express();
@@ -33,10 +34,20 @@ async function signIn(req, res, next) {
   const [username, password] = auth.split(':');
   let user = await User.findLoggedIn(username, password);
   if (user) {
-    res.status(200).send({ username: user.username });
+    // res.status(200).send({ username: user.username });
+
+    // more to come in lab 8
+    const data = { username: user.username };
+    const jwtoken = jwt.sign(data, 'this is a secret, shhh');
+
+    // instead of sending username, send JWT
+    res.send(jwtoken);
   } else {
     next(new Error('Invalid Login.'));
   }
 }
 
-module.exports = { authRoutes };
+module.exports = {
+  authRoutes,
+  signIn,
+};
