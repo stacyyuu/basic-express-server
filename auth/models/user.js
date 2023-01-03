@@ -1,5 +1,3 @@
-'use strict';
-
 const { DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
@@ -20,7 +18,7 @@ function createUser(sequelize) {
 
   User.findLoggedIn = async (username, password) => {
     const user = await User.findOne({ where: { username } });
-    if (user == null) {
+    if (user === null) {
       return null;
     }
     if (await bcrypt.compare(password, user.password)) {
@@ -28,7 +26,6 @@ function createUser(sequelize) {
     }
     return null;
   };
-
   return User;
 }
 
