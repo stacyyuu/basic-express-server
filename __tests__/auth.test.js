@@ -1,30 +1,46 @@
-const { app } = require('../src/server');
-const { sequelize } = require('../auth/models/index.js');
-const supertest = require('supertest');
+const { sequelize, User } = require('../auth/models');
+const base64 = require('js-base64');
+const bcrypt = require('bcrypt');
+const { signIn } = require('../auth/routes');
 
-const request = supertest(app);
-
-describe('Basic Auth Tests', () => {
+describe('Auth Routes', () => {
   beforeEach(() => sequelize.sync());
 
-  test('POST to /signup', async () => {
-    const response = await request.post('/signup').send({
-      username: 'stacy',
-      password: 'maru430',
-    });
-    expect(response.status).toBe(201);
-    const user = response.body;
+  test('Can create user', async () => {
+    const user = await User.createWithHashed('stacy', 'maru5');
     expect(user.username).toEqual('stacy');
+    expect(bcrypt.compareSync('maru5', user.username));
   });
 
-  test('POST to /signin', async () => {
-    await request.post('/signin').send({
-      username: 'stacy',
-      password: 'maru430',
-    });
-    const response = await request.post('/signin').auth('Basic stacy:maru430');
-    expect(response.status).toBe(200);
-    const user = response.body;
-    expect(user.username).toEqual('stacy');
+  test('Can find user with log in', async () => {
+    const user = await User.findLoggedIn('stacy', 'maru5');
+    expect(user).toBeDefined();
+  });
+
+  test('Returns JWT from after sign in', async () => {
+    // arrange
+    // await User.createWithHashed('Stacy', 'maru12');
+
+    // act
+    const req = {
+      header: jest.fn().mockImplementation((header) => {
+        if (header === 'Authorization') {
+          return 'Basic ' + base64.encode('stacy:maru5');
+        }
+        return 'Header does not contain Authorization';
+      }),
+    };
+
+    const res = { send: jest.fn() };
+    const next = jest.fn();
+    await signIn(req, res, next);
+
+    // assert
+    // mock.lastCall - returns arguments that was passed to the send jest mock function
+    const jwtoken = res.send.mock.lastCall[0];
+    console.log(jwtoken);
+    const [_header, payloadBase64, _signature] = jwtoken.split('.');
+    const payload = JSON.parse(base64.decode(payloadBase64));
+    expect(payload.username).toBe('stacy');
   });
 });
