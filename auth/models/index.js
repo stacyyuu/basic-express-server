@@ -3,4 +3,7 @@ const { createUser } = require('./user');
 
 const User = createUser(sequelize);
 
-module.exports = { User };
+module.exports = {
+  User,
+  sequelize,
+};

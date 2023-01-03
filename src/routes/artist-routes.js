@@ -52,6 +52,7 @@ async function createArtist(req, res) {
     name,
     single,
   });
+  // prettier-ignore
   const genres = req.body.genres ?? [];
   for (const name of genres) {
     await artist.createGenre({ name });
