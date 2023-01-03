@@ -65,9 +65,9 @@ async function updateShow(req, res, next) {
     next();
   } else {
     // prettier-ignore
-    const title = req.body.title ?? show.title;
-    const released = req.body.released ?? show.released;
-    const episodes = req.body.episodes ?? show.episodes;
+    const title = req.body.title || show.title;
+    const released = req.body.released || show.released;
+    const episodes = req.body.episodes || show.episodes;
     let updatedShow = {
       title,
       released,

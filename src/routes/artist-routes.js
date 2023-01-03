@@ -53,7 +53,7 @@ async function createArtist(req, res) {
     single,
   });
   // prettier-ignore
-  const genres = req.body.genres ?? [];
+  const genres = req.body.genres || [];
   for (const name of genres) {
     await artist.createGenre({ name });
   }
@@ -67,8 +67,8 @@ async function updateArtist(req, res, next) {
   if (artist == null) {
     next();
   } else {
-    const name = req.body.name ?? artist.name;
-    const single = req.body.single ?? artist.single;
+    const name = req.body.name || artist.name;
+    const single = req.body.single || artist.single;
     let updatedArtist = {
       name,
       single,
