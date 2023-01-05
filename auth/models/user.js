@@ -7,12 +7,13 @@ function createUser(sequelize) {
   const User = sequelize.define('User', {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
+    role: DataTypes.STRING, // 'reader', 'writer', 'editor', 'admin'
   });
 
-  User.createWithHashed = async (username, password) => {
+  User.createWithHashed = async (username, password, role) => {
     password = await bcrypt.hash(password, COMPLEXITY);
-    console.log('Creating a new user', username, password);
-    const user = await User.create({ username, password });
+    console.log('Creating a new user', username, password, role);
+    const user = await User.create({ username, password, role });
     return user;
   };
 

@@ -8,9 +8,11 @@ const { sequelize } = require('./models');
 const { artistRoutes } = require('./routes/artist-routes');
 const { showRoutes } = require('./routes/show-routes');
 const { authRoutes, checkJWT } = require('../auth');
+const { blogRoutes } = require('./routes/blog-routes');
 
 app.use(express.json());
 app.use(authRoutes);
+app.use(blogRoutes);
 app.use(artistRoutes);
 app.use(showRoutes);
 
@@ -24,7 +26,7 @@ app.get('/person', validator, (req, res) => {
 });
 
 app.get('/loggedin', checkJWT, (req, res) => {
-  res.status(200).send('You are logged in, ' + req.username);
+  res.status(200).send('You are logged in, ' + req.blogname);
 });
 
 // Using errors when all other routes placed or no name used in query string
@@ -33,7 +35,8 @@ app.use('*', notFound);
 
 function start() {
   app.listen(process.env.PORT || 3002, async () => {
-    await sequelize.sync();
+    // creates & updates db tables
+    await sequelize.sync({ alter: true });
     console.log(`listening on ${process.env.PORT}`);
   });
 }
