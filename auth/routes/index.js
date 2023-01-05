@@ -10,11 +10,12 @@ authRoutes.post('/signup', signUp);
 authRoutes.post('/signin', signIn);
 
 async function signUp(req, res, next) {
-  const { username, password } = req.body;
+  const { username, password, role } = req.body;
   let auth = `${username}:${password}`;
   let encoded_auth = 'Basic ' + base64.encode(auth);
   console.log('ENCODED AUTH', encoded_auth);
-  let user = await User.createWithHashed(username, password);
+  // add role of 'reader'
+  let user = await User.createWithHashed(username, password, role);
   if (user) {
     res.status(201).json(user);
   } else {
@@ -36,9 +37,10 @@ async function signIn(req, res, next) {
   if (user) {
     // res.status(200).send({ username: user.username });
 
-    // more to come in lab 8
-    const data = { username: user.username };
+    // add role: uer.role
+    const data = { username: user.username, role: user.role };
     const jwtoken = jwt.sign(data, TOKEN_SECRET);
+  
 
     // instead of sending username, send JWT
     res.send(jwtoken);
@@ -58,15 +60,26 @@ async function checkJWT(req, _, next) {
   const jwtoken = auth.replace('Bearer ', '');
   const decoded = jwt.verify(jwtoken, TOKEN_SECRET);
   req.username = decoded.username;
+  req.role = decoded.role;
   next();
   } catch (err){
     next(new Error('Could not decode auth', {cause: err}))
   }
 }
 
+function checkRole(roles) {
+  return function ensureRole(req, _, next){
+    if (roles.includes(req.role)) {
+      next();
+    } else {
+      next(new Error('Permission denied.'));
+    }
+  };
+}
 
 module.exports = {
   authRoutes,
   signIn,
-  checkJWT
+  checkJWT,
+  checkRole,
 };
