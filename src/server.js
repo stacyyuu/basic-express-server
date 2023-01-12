@@ -11,8 +11,6 @@ const { authRoutes, checkJWT } = require('../auth');
 const { blogRoutes } = require('./routes/blog-routes');
 
 app.use(express.json());
-app.use(authRoutes);
-app.use(blogRoutes);
 app.use(artistRoutes);
 app.use(showRoutes);
 
@@ -29,6 +27,8 @@ app.get('/loggedin', checkJWT, (req, res) => {
   res.status(200).send('You are logged in, ' + req.blogname);
 });
 
+app.use(authRoutes);
+app.use(blogRoutes);
 // Using errors when all other routes placed or no name used in query string
 app.use(serverError);
 app.use('*', notFound);
